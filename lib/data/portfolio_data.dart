@@ -4,7 +4,7 @@ class PortfolioData {
   static const String title = 'Flutter Developer';
   static const String subtitle = "Hi, I'm";
   static const String description =
-      'Junior Flutter Developer with +3 year of experience and a passion for knowing and learning more about software development. Also, have developed communication skills and am prepared to work on a high profile, always looking to contribute, learn, and build robust solutions in my career.';
+      'Mid-Level Flutter Developer with +3 years of experience specializing in cross-platform mobile applications. Proven track record of delivering scalable, user-centric solutions across diverse industries including e-learning, e-commerce, and enterprise systems. Passionate about clean architecture, performance optimization, and creating seamless user experiences that drive business growth.';
   static const String email = 'mohamedalaa03ba3b245@gmail.com';
   static const String phone = '+20 100 304 7498';
   static const String experienceYears = '3+';
