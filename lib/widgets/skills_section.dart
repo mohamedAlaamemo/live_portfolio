@@ -1,239 +1,286 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
 
+// ── per-category config (no pink) ────────────────────────────────────────────
+class _Cfg {
+  final IconData icon;
+  final Color color;
+  const _Cfg(this.icon, this.color);
+}
+
+const List<_Cfg> _cfgs = [
+  _Cfg(Icons.terminal_rounded,       Color(0xFF38BDF8)), // Core      – sky
+  _Cfg(Icons.psychology_rounded,     Color(0xFF818CF8)), // CS        – indigo
+  _Cfg(Icons.phone_android_rounded,  Color(0xFF34D399)), // Flutter   – emerald
+  _Cfg(Icons.account_tree_rounded,   Color(0xFFF59E0B)), // Arch      – amber
+  _Cfg(Icons.translate_rounded,      Color(0xFF94A3B8)), // Languages – slate
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w         = MediaQuery.of(context).size.width;
     final isDesktop = w > 1024;
-    final skills = PortfolioData.skills;
+    final isTablet  = w > 768 && w <= 1024;
+    final hPad      = isDesktop ? 80.0 : (isTablet ? 40.0 : 20.0);
+    final cats      = PortfolioData.skillCategories;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      decoration: BoxDecoration(
-        color: secondaryBackground,
-        border: Border.symmetric(
-          horizontal: BorderSide(color: primaryColor.withOpacity(0.1), width: 1),
-        ),
+      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 60),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,       // ← title LEFT
+        children: [
+
+          // ── Title (left-aligned) ──────────────────────────────────────────
+          RichText(
+            text: TextSpan(children: [
+              TextSpan(
+                text: 'My ',
+                style: AppTextStyles.h3.copyWith(
+                  fontSize: isDesktop ? 36 : 28,
+                  color: Colors.white,
+                ),
+              ),
+              TextSpan(
+                text: 'Skills',
+                style: AppTextStyles.h3.copyWith(
+                  fontSize: isDesktop ? 36 : 28,
+                  foreground: Paint()
+                    ..shader = primaryGradient
+                        .createShader(const Rect.fromLTWH(0, 0, 160, 40)),
+                ),
+              ),
+            ]),
+          ),
+          const SizedBox(height: 8),
+
+          // subtle underline accent
+          Container(
+            width: isDesktop ? 56 : 44,
+            height: 3,
+            decoration: BoxDecoration(
+              gradient: primaryGradient,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 40),
+
+          // ── Skill categories ─────────────────────────────────────────────
+          ...List.generate(cats.length, (i) => _SkillRow(
+            category: cats[i],
+            cfg: _cfgs[i],
+            isDesktop: isDesktop,
+            isLast: i == cats.length - 1,
+          )),
+        ],
       ),
-      child: isDesktop
-        ? // Desktop: horizontal scrollable row
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: skills.asMap().entries.map((e) {
-                  final isLast = e.key == skills.length - 1;
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
+    );
+  }
+}
+
+// ─── One skill row ────────────────────────────────────────────────────────────
+class _SkillRow extends StatefulWidget {
+  final SkillCategory category;
+  final _Cfg cfg;
+  final bool isDesktop;
+  final bool isLast;
+
+  const _SkillRow({
+    required this.category,
+    required this.cfg,
+    required this.isDesktop,
+    required this.isLast,
+  });
+
+  @override
+  State<_SkillRow> createState() => _SkillRowState();
+}
+
+class _SkillRowState extends State<_SkillRow> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent  = widget.cfg.color;
+    final w       = MediaQuery.of(context).size.width;
+    final isMobile = w < 700;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── row ──────────────────────────────────────────────────────────
+        MouseRegion(
+          onEnter: (_) => setState(() => _hovered = true),
+          onExit:  (_) => setState(() => _hovered = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.isDesktop ? 20 : 14,
+              vertical:   widget.isDesktop ? 20 : 16,
+            ),
+            decoration: BoxDecoration(
+              color: _hovered
+                  ? accent.withOpacity(0.05)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(14),
+              border: Border(
+                left: BorderSide(
+                  color: _hovered ? accent : accent.withOpacity(0.35),
+                  width: 3,
+                ),
+              ),
+            ),
+            child: isMobile
+                // mobile: stacked
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _SkillTile(skill: e.value),
-                      if (!isLast)
-                        Container(
-                          width: 1,
-                          color: primaryColor.withOpacity(0.1),
-                        ),
+                      _Header(cfg: widget.cfg, name: widget.category.name,
+                          isDesktop: widget.isDesktop),
+                      const SizedBox(height: 12),
+                      _ChipWrap(skills: widget.category.skills,
+                          accent: accent, isDesktop: widget.isDesktop),
                     ],
-                  );
-                }).toList(),
-              ),
-            ),
-          )
-        : // Mobile/Tablet: centered grid
+                  )
+                // desktop/tablet: side by side
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: widget.isDesktop ? 210 : 170,
+                        child: _Header(cfg: widget.cfg, name: widget.category.name,
+                            isDesktop: widget.isDesktop),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: _ChipWrap(skills: widget.category.skills,
+                            accent: accent, isDesktop: widget.isDesktop),
+                      ),
+                    ],
+                  ),
+          ),
+        ),
+
+        // ── divider (not after last) ──────────────────────────────────────
+        if (!widget.isLast)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Center(
-              child: Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: skills.map((skill) => _MobileSkillChip(skill: skill)).toList(),
-              ),
+            padding: EdgeInsets.symmetric(
+              vertical: widget.isDesktop ? 4 : 2,
+              horizontal: widget.isDesktop ? 20 : 14,
+            ),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.white.withOpacity(0.05),
             ),
           ),
+      ],
     );
   }
 }
 
-class _SkillTile extends StatefulWidget {
-  final SkillData skill;
-  const _SkillTile({required this.skill});
-
-  @override
-  State<_SkillTile> createState() => _SkillTileState();
-}
-
-class _SkillTileState extends State<_SkillTile> {
-  bool _hovered = false;
+// ── Category header (icon + label) ───────────────────────────────────────────
+class _Header extends StatelessWidget {
+  final _Cfg cfg;
+  final String name;
+  final bool isDesktop;
+  const _Header({required this.cfg, required this.name, required this.isDesktop});
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      cursor: SystemMouseCursors.click,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 24),
-        color: _hovered ? primaryColor.withOpacity(0.06) : Colors.transparent,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildIcon(),
-            const SizedBox(width: 12),
-            Text(
-              widget.skill.name,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: _hovered ? Colors.white : textSecondary,
-                fontWeight: _hovered ? FontWeight.w700 : FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
-          ],
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width:  isDesktop ? 38 : 32,
+          height: isDesktop ? 38 : 32,
+          decoration: BoxDecoration(
+            color: cfg.color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Icon(cfg.icon, color: cfg.color, size: isDesktop ? 18 : 15),
         ),
-      ),
-    );
-  }
-
-  Widget _buildIcon() {
-    if (widget.skill.isCustom && widget.skill.customType == SkillType.bloc) {
-      // Custom Bloc icon using a colored widget icon
-      return Container(
-        width: 26, height: 26,
-        decoration: BoxDecoration(
-          color: Color(widget.skill.color).withOpacity(_hovered ? 1.0 : 0.7),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: const Icon(Icons.widgets_rounded, color: Colors.white, size: 18),
-      );
-    }
-    if (widget.skill.isCustom && widget.skill.customType == SkillType.api) {
-      // REST API icon using a cloud badge
-      return Container(
-        width: 36, height: 26,
-        decoration: BoxDecoration(
-          color: Color(widget.skill.color).withOpacity(_hovered ? 0.2 : 0.1),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: Color(widget.skill.color).withOpacity(0.6), width: 1),
-        ),
-        child: Center(
+        const SizedBox(width: 10),
+        Flexible(
           child: Text(
-            'API',
-            style: TextStyle(
-              color: Color(widget.skill.color),
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.5,
+            name,
+            style: AppTextStyles.bodyMedium.copyWith(
+              fontSize: isDesktop ? 14 : 12,
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.1,
             ),
           ),
         ),
-      );
-    }
-    return SvgPicture.network(
-      widget.skill.iconUrl,
-      width: 26,
-      height: 26,
-      placeholderBuilder: (_) => Icon(
-        Icons.code_rounded,
-        color: Color(widget.skill.color).withOpacity(0.7),
-        size: 26,
-      ),
+      ],
     );
   }
 }
 
-class _MobileSkillChip extends StatefulWidget {
-  final SkillData skill;
-  const _MobileSkillChip({required this.skill});
+// ── Chip wrap ─────────────────────────────────────────────────────────────────
+class _ChipWrap extends StatelessWidget {
+  final List<String> skills;
+  final Color accent;
+  final bool isDesktop;
+  const _ChipWrap({required this.skills, required this.accent, required this.isDesktop});
 
   @override
-  State<_MobileSkillChip> createState() => _MobileSkillChipState();
+  Widget build(BuildContext context) => Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: skills
+            .map((s) => _Chip(label: s, accent: accent, isDesktop: isDesktop))
+            .toList(),
+      );
 }
 
-class _MobileSkillChipState extends State<_MobileSkillChip> {
+// ── Chip ──────────────────────────────────────────────────────────────────────
+class _Chip extends StatefulWidget {
+  final String label;
+  final Color accent;
+  final bool isDesktop;
+  const _Chip({required this.label, required this.accent, required this.isDesktop});
+
+  @override
+  State<_Chip> createState() => _ChipState();
+}
+
+class _ChipState extends State<_Chip> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final a = widget.accent;
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
+      onExit:  (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        duration: const Duration(milliseconds: 150),
+        padding: EdgeInsets.symmetric(
+          horizontal: widget.isDesktop ? 12 : 9,
+          vertical:   widget.isDesktop ? 6  : 4,
+        ),
         decoration: BoxDecoration(
-          color: _hovered ? primaryColor.withOpacity(0.1) : cardColor.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
+          color:  _hovered ? a.withOpacity(0.15) : a.withOpacity(0.07),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: _hovered ? primaryColor.withOpacity(0.4) : primaryColor.withOpacity(0.2),
+            color: _hovered ? a.withOpacity(0.55) : a.withOpacity(0.2),
             width: 1,
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildIcon(),
-            const SizedBox(width: 8),
-            Text(
-              widget.skill.name,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: _hovered ? Colors.white : textSecondary,
-                fontWeight: _hovered ? FontWeight.w600 : FontWeight.w500,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIcon() {
-    if (widget.skill.isCustom && widget.skill.customType == SkillType.bloc) {
-      return Container(
-        width: 20, height: 20,
-        decoration: BoxDecoration(
-          color: Color(widget.skill.color).withOpacity(_hovered ? 1.0 : 0.7),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: const Icon(Icons.widgets_rounded, color: Colors.white, size: 14),
-      );
-    }
-    if (widget.skill.isCustom && widget.skill.customType == SkillType.api) {
-      return Container(
-        width: 28, height: 20,
-        decoration: BoxDecoration(
-          color: Color(widget.skill.color).withOpacity(_hovered ? 0.2 : 0.1),
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: Color(widget.skill.color).withOpacity(0.6), width: 1),
-        ),
-        child: Center(
-          child: Text(
-            'API',
-            style: TextStyle(
-              color: Color(widget.skill.color),
-              fontSize: 8,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.5,
-            ),
+        child: Text(
+          widget.label,
+          style: AppTextStyles.caption.copyWith(
+            color: _hovered ? Colors.white : a.withOpacity(0.85),
+            fontWeight: FontWeight.w500,
+            fontSize: widget.isDesktop ? 12 : 11,
           ),
         ),
-      );
-    }
-    return SvgPicture.network(
-      widget.skill.iconUrl,
-      width: 20,
-      height: 20,
-      placeholderBuilder: (_) => Icon(
-        Icons.code_rounded,
-        color: Color(widget.skill.color).withOpacity(0.7),
-        size: 20,
       ),
     );
   }

@@ -28,57 +28,46 @@ class ProjectsSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'My ',
-                        style: AppTextStyles.h4.copyWith(fontSize: isDesktop ? 28 : 22, color: Colors.white),
-                      ),
-                      TextSpan(
-                        text: 'Projects',
-                        style: AppTextStyles.h4.copyWith(
-                          fontSize: isDesktop ? 28 : 22,
-                          foreground: Paint()
-                            ..shader = primaryGradient.createShader(
-                              const Rect.fromLTWH(0, 0, 200, 30),
-                            ),
-                        ),
-                      ),
-                    ],
+            // Header
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'My ',
+                    style: AppTextStyles.h4.copyWith(fontSize: isDesktop ? 28 : 22, color: Colors.white),
                   ),
-                ),
-                _ViewAllButton(onTap: () {}),
-              ],
+                  TextSpan(
+                    text: 'Projects',
+                    style: AppTextStyles.h4.copyWith(
+                      fontSize: isDesktop ? 28 : 22,
+                      foreground: Paint()
+                        ..shader = primaryGradient.createShader(
+                          const Rect.fromLTWH(0, 0, 200, 30),
+                        ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 32),
 
             // Project cards grid
             LayoutBuilder(builder: (ctx, constraints) {
               int crossAxisCount;
-              double childAspectRatio;
+              double mainAxisExtent;
 
               if (constraints.maxWidth > 1200) {
-                // Desktop large - 4 columns
                 crossAxisCount = 4;
-                childAspectRatio = 0.8;
+                mainAxisExtent = 360;
               } else if (constraints.maxWidth > 900) {
-                // Desktop - 3 columns
                 crossAxisCount = 3;
-                childAspectRatio = 0.85;
+                mainAxisExtent = 370;
               } else if (constraints.maxWidth > 600) {
-                // Tablet - 2 columns
                 crossAxisCount = 2;
-                childAspectRatio = 0.9;
+                mainAxisExtent = 360;
               } else {
-                // Mobile - 1 column
                 crossAxisCount = 1;
-                childAspectRatio = 1.2;
+                mainAxisExtent = 340;
               }
 
               return GridView.builder(
@@ -86,7 +75,7 @@ class ProjectsSection extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                  childAspectRatio: childAspectRatio,
+                  mainAxisExtent: mainAxisExtent,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
                 ),
@@ -117,7 +106,7 @@ class _ProjectCardState extends State<_ProjectCard> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    final isSmallCard = w <= 600; // للشاشات الصغيرة
+    final isSmallCard = w <= 600;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
@@ -143,7 +132,7 @@ class _ProjectCardState extends State<_ProjectCard> {
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
               child: Container(
-                height: isSmallCard ? 120 : 160,
+                height: isSmallCard ? 130 : 150,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -156,21 +145,21 @@ class _ProjectCardState extends State<_ProjectCard> {
                     ? Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Gradient overlay
                           Container(
                             width: double.infinity,
                             height: double.infinity,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: widget.project.gradientColors.map((c) => Color(c).withOpacity(0.3)).toList(),
+                                colors: widget.project.gradientColors
+                                    .map((c) => Color(c).withOpacity(0.3))
+                                    .toList(),
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                             ),
                           ),
-                          // Project image
                           Padding(
-                            padding: EdgeInsets.all(isSmallCard ? 16.0 : 20.0),
+                            padding: EdgeInsets.all(isSmallCard ? 14.0 : 18.0),
                             child: Image.asset(
                               widget.project.imagePath!,
                               fit: BoxFit.contain,
@@ -183,19 +172,19 @@ class _ProjectCardState extends State<_ProjectCard> {
                     : Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Decorative phone frame (fallback)
                           Container(
-                            width: isSmallCard ? 50 : 70,
-                            height: isSmallCard ? 80 : 120,
+                            width: isSmallCard ? 50 : 65,
+                            height: isSmallCard ? 75 : 110,
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+                              border: Border.all(
+                                  color: Colors.white.withOpacity(0.2), width: 1.5),
                             ),
                             child: Icon(
                               Icons.phone_android_rounded,
                               color: Colors.white.withOpacity(0.7),
-                              size: isSmallCard ? 24 : 36
+                              size: isSmallCard ? 24 : 34,
                             ),
                           ),
                         ],
@@ -206,55 +195,61 @@ class _ProjectCardState extends State<_ProjectCard> {
             // Content
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(isSmallCard ? 12 : 16),
+                padding: EdgeInsets.fromLTRB(
+                  isSmallCard ? 12 : 14,
+                  isSmallCard ? 10 : 12,
+                  isSmallCard ? 12 : 14,
+                  isSmallCard ? 10 : 12,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     // Title
                     Text(
                       widget.project.title,
                       style: AppTextStyles.h5.copyWith(
-                        fontSize: isSmallCard ? 14 : 16,
-                        color: Colors.white
+                        fontSize: isSmallCard ? 14 : 15,
+                        color: Colors.white,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: isSmallCard ? 6 : 8),
+                    const SizedBox(height: 6),
 
-                    // Description
-                    Expanded(
-                      child: Text(
-                        widget.project.description,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: textSecondary,
-                          height: 1.3,
-                          fontSize: isSmallCard ? 11 : 12,
-                        ),
-                        maxLines: isSmallCard ? 3 : 4,
-                        overflow: TextOverflow.ellipsis,
+                    // Description - fixed lines, no Expanded
+                    Text(
+                      widget.project.description,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: textSecondary,
+                        height: 1.4,
+                        fontSize: isSmallCard ? 11 : 12,
                       ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
 
-                    SizedBox(height: isSmallCard ? 8 : 12),
+                    const SizedBox(height: 10),
 
                     // Tags
-                    Container(
-                      height: isSmallCard ? 20 : 24,
+                    SizedBox(
+                      height: isSmallCard ? 20 : 22,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: widget.project.technologies.take(3)
+                          children: widget.project.technologies
+                              .take(3)
                               .map((t) => Container(
-                                    margin: const EdgeInsets.only(right: 6),
+                                    margin: const EdgeInsets.only(right: 5),
                                     padding: EdgeInsets.symmetric(
                                       horizontal: isSmallCard ? 6 : 8,
-                                      vertical: isSmallCard ? 2 : 3
+                                      vertical: isSmallCard ? 2 : 3,
                                     ),
                                     decoration: BoxDecoration(
                                       color: primaryColor.withOpacity(0.08),
                                       borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(color: primaryColor.withOpacity(0.25), width: 1),
+                                      border: Border.all(
+                                          color: primaryColor.withOpacity(0.25), width: 1),
                                     ),
                                     child: Text(
                                       t,
@@ -262,17 +257,19 @@ class _ProjectCardState extends State<_ProjectCard> {
                                         color: primaryColor,
                                         fontWeight: FontWeight.w600,
                                         fontSize: isSmallCard ? 8 : 9,
-                                      )
+                                      ),
                                     ),
                                   ))
                               .toList(),
                         ),
                       ),
                     ),
-                    SizedBox(height: isSmallCard ? 10 : 14),
+
+                     const Spacer(),
 
                     // Actions
                     _buildActionButtons(isSmallCard),
+                    const SizedBox(height: 10,)
                   ],
                 ),
               ),
@@ -450,56 +447,6 @@ class _GitHubIconBtnState extends State<_GitHubIconBtn> {
   }
 }
 
-class _ViewAllButton extends StatefulWidget {
-  final VoidCallback onTap;
-  const _ViewAllButton({required this.onTap});
-
-  @override
-  State<_ViewAllButton> createState() => _ViewAllButtonState();
-}
-
-class _ViewAllButtonState extends State<_ViewAllButton> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: _hovered ? primaryColor.withOpacity(0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: _hovered ? primaryColor.withOpacity(0.5) : primaryColor.withOpacity(0.25),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'View All Projects',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: _hovered ? Colors.white : primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Icon(Icons.arrow_forward_rounded, color: primaryColor, size: 14),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _StoreButton extends StatefulWidget {
   final IconData icon;

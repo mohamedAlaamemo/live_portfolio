@@ -179,71 +179,104 @@ class PortfolioData {
   // Experience Data
   static const List<ExperienceData> experiences = [
     ExperienceData(
-      title: 'Senior Flutter Developer',
-      company: 'Tech Company',
-      period: '2022 - Present',
+      title: 'Mobile Developer',
+      company: 'Ashal Network',
+      companyType: 'Full time',
+      period: '11/2024 – Present',
       description:
-          'Led development of cross-platform mobile applications using Flutter and Dart. Implemented clean architecture and state management with BLoC pattern.',
-      technologies: ['Flutter', 'Dart', 'Firebase', 'BLoC'],
+          'Worked closely with clients to understand their requirements and ensure that their needs were met within the project timelines. Building mobile applications using Flutter and converting UI designs into highly scalable applications.',
+      technologies: ['Flutter', 'Dart', 'REST API', 'BLoC', 'Firebase'],
+      logoPath: 'assets/images/ashal_logo.png',
     ),
     ExperienceData(
-      title: 'Mobile App Developer',
-      company: 'Digital Agency',
-      period: '2020 - 2022',
+      title: 'Mobile Developer',
+      company: 'MOBISITE',
+      companyType: 'Freelancing team',
+      period: '07/2022 – Present',
       description:
-          'Developed and maintained multiple mobile applications. Worked closely with UI/UX designers to implement pixel-perfect designs.',
-      technologies: ['Flutter', 'REST API', 'SQLite'],
-    ),
-    ExperienceData(
-      title: 'Junior Developer',
-      company: 'Startup',
-      period: '2019 - 2020',
-      description:
-          'Started career as junior developer, learned mobile development fundamentals and best practices.',
-      technologies: ['Flutter', 'Firebase', 'Git'],
+          'Worked closely with clients to understand their requirements and ensure that their needs were met within the project timelines. Building mobile applications using Flutter and converting UI designs into highly scalable applications.',
+      technologies: ['Flutter', 'Dart', 'REST API', 'Git'],
+      logoPath: 'assets/images/mobisite.png',
     ),
   ];
 
-  // Skills Data
-  static const List<SkillData> skills = [
-    SkillData(
-      'Flutter',
-      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
-      0xFF54C5F8,
+  // Activities Data
+  static const List<ActivityData> activities = [
+    ActivityData(
+      title: 'Competitive Programmer',
+      period: '2019 – 2022',
+      description:
+          'Solved +2000 problems in different online judges like Codechef, Codeforces, and Atcoder. The problems gave a strong knowledge of different topics especially Data Structures, Algorithms, and Mathematics.',
+      link: 'https://codeforces.com/profile/Wrong_Answer_OnTest_1',
+      linkLabel: 'Codeforces Profile',
+      icon: 'code',
     ),
-    SkillData(
-      'Dart',
-      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg',
-      0xFF00B4D2,
+    ActivityData(
+      title: 'Mentor at ICPC – Minia University',
+      period: '2021 – 2023',
+      description:
+          'Teaching students fundamentals of programming, data structures, algorithms, and problem-solving techniques to prepare them for competitive programming contests. Participated in the Egyptian Collegiate Programming Contest (ECPC).',
+      icon: 'school',
     ),
-    SkillData(
-      'Firebase',
-      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
-      0xFFFFCA28,
+  ];
+
+  // Education Data
+  static const List<EducationData> education = [
+    EducationData(
+      degree: 'Bachelor of Computer Science',
+      institution: 'Faculty of Computer and Information, Minia University',
+      period: '2019 – 2023',
     ),
-    SkillData(
-      'Bloc',
-      '',
-      0xFF4ECDC4,
-      isCustom: true,
-      customType: SkillType.bloc,
+  ];
+
+  // Skills Data – categorized
+  static const List<SkillCategory> skillCategories = [
+    SkillCategory(
+      name: 'Core Languages & Tools',
+      icon: 'code',
+      skills: ['Flutter', 'Dart', 'Git'],
     ),
-    SkillData(
-      'REST API',
-      '',
-      0xFF3B82F6,
-      isCustom: true,
-      customType: SkillType.api,
+    SkillCategory(
+      name: 'CS Fundamentals',
+      icon: 'school',
+      skills: ['OOP', 'Data Structures', 'Algorithms', 'Clean Code', 'SOLID Principles'],
     ),
-    SkillData(
-      'Git',
-      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-      0xFFF05032,
+    SkillCategory(
+      name: 'Flutter & Integrations',
+      icon: 'phone',
+      skills: [
+        'Firebase',
+        'REST APIs',
+        'Dio',
+        'SQLite',
+        'Hive',
+        'Shared Preferences',
+        'Paymob',
+        'Stripe',
+        'Google Maps',
+        'Local Notifications',
+        'FCM',
+        'Localisation',
+        'Null Safety',
+        'Third-Party Libraries',
+      ],
     ),
-    SkillData(
-      'UI/UX',
-      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-      0xFFEC4899,
+    SkillCategory(
+      name: 'Architecture & Patterns',
+      icon: 'layers',
+      skills: [
+        'MVVM',
+        'Clean Architecture',
+        'BLoC / Cubit',
+        'Stream',
+        'Dependency Injection',
+        'Caching APIs',
+      ],
+    ),
+    SkillCategory(
+      name: 'Languages',
+      icon: 'language',
+      skills: ['Arabic (Native)', 'English'],
     ),
   ];
 }
@@ -277,33 +310,61 @@ class ProjectData {
 class ExperienceData {
   final String title;
   final String company;
+  final String companyType;
   final String period;
   final String description;
   final List<String> technologies;
+  final String? logoPath;
 
   const ExperienceData({
     required this.title,
     required this.company,
+    this.companyType = '',
     required this.period,
     required this.description,
     required this.technologies,
+    this.logoPath,
   });
 }
 
-enum SkillType { bloc, api }
+class ActivityData {
+  final String title;
+  final String period;
+  final String description;
+  final String? link;
+  final String? linkLabel;
+  final String icon;
 
-class SkillData {
+  const ActivityData({
+    required this.title,
+    required this.period,
+    required this.description,
+    this.link,
+    this.linkLabel,
+    required this.icon,
+  });
+}
+
+class EducationData {
+  final String degree;
+  final String institution;
+  final String period;
+
+  const EducationData({
+    required this.degree,
+    required this.institution,
+    required this.period,
+  });
+}
+
+class SkillCategory {
   final String name;
-  final String iconUrl;
-  final int color;
-  final bool isCustom;
-  final SkillType? customType;
+  final String icon;
+  final List<String> skills;
 
-  const SkillData(
-    this.name,
-    this.iconUrl,
-    this.color, {
-    this.isCustom = false,
-    this.customType,
+  const SkillCategory({
+    required this.name,
+    required this.icon,
+    required this.skills,
   });
 }
