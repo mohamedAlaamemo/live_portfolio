@@ -16,7 +16,18 @@ git commit -m "Initial portfolio commit"
 git branch -M main
 git remote add origin https://github.com/yourusername/memo_portfolio.git
 git push -u origin main
+
+
+push build web
+git init
+git remote add origin https://github.com/mohamedAlaamemo/live_portfolio.git
+git add .
+git commit -m "change app icon"
+git branch -M main
+git push -f origin main
+
 ```
+
 
 2. **تفعيل GitHub Pages:**
    - اذهب إلى Settings → Pages
