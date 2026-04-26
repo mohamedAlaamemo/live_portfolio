@@ -45,18 +45,22 @@ class ContactSection extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _ContactItem(
-                          icon: Icons.email_outlined,
-                          label: PortfolioData.email,
-                          iconColor: primaryColor,
-                          onTap: () => _launchUrl('mailto:${PortfolioData.email}'),
+                        Flexible(
+                          child: _ContactItem(
+                            icon: Icons.email_outlined,
+                            label: PortfolioData.email,
+                            iconColor: primaryColor,
+                            onTap: () => _launchUrl('mailto:${PortfolioData.email}'),
+                          ),
                         ),
-                        const SizedBox(width: 40),
-                        _ContactItem(
-                          icon: Icons.chat_bubble_outline_rounded,
-                          label: PortfolioData.phone,
-                          iconColor: const Color(0xFF25D366),
-                          onTap: () => _launchUrl(PortfolioData.whatsappUrl),
+                        const SizedBox(width: 24),
+                        Flexible(
+                          child: _ContactItem(
+                            icon: Icons.chat_bubble_outline_rounded,
+                            label: PortfolioData.phone,
+                            iconColor: const Color(0xFF25D366),
+                            onTap: () => _launchUrl(PortfolioData.whatsappUrl),
+                          ),
                         ),
                       ],
                     ),
@@ -178,12 +182,16 @@ class _ContactItemState extends State<_ContactItem> {
               child: Icon(widget.icon, color: widget.iconColor, size: 17),
             ),
             const SizedBox(width: 10),
-            Text(
-              widget.label,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: _hovered ? Colors.white : textSecondary,
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
+            Flexible(
+              child: Text(
+                widget.label,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: _hovered ? Colors.white : textSecondary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ],

@@ -23,8 +23,8 @@ class PortfolioData {
     ProjectData(
       title: 'Ashal HR',
       description:
-          'Comprehensive HR management system for employee tracking, payroll, and organizational management.',
-      technologies: ['Flutter', 'HR Management', 'Employee Tracking'],
+          'Comprehensive HR management system for employee tracking, attendance, payroll, and organizational management with real-time location tracking via Google Maps.',
+      technologies: ['Android', 'iOS', 'Google Maps', 'HR Management'],
       gradientColors: [0xFF6C63FF, 0xFF3B82F6],
       imagePath: 'assets/images/ashal_hr.png',
       playStoreUrl:
@@ -36,8 +36,8 @@ class PortfolioData {
     ProjectData(
       title: 'Blink Mart',
       description:
-          'Multi-vendor delivery platform connecting customers with local shops and restaurants.',
-      technologies: ['Flutter', 'Firebase', 'Real-time Tracking'],
+          'Multi-vendor delivery app connecting customers with local shops for vegetables, grocery, meat, and poultry. Real-time order tracking and seamless checkout experience.',
+      technologies: ['Android', 'iOS', 'Multi-vendor', 'Real-time Tracking'],
       gradientColors: [0xFF4F46E5, 0xFF6C63FF],
       imagePath: 'assets/images/blink_mart.png',
       playStoreUrl:
@@ -49,8 +49,8 @@ class PortfolioData {
     ProjectData(
       title: 'ChemBakr',
       description:
-          'Chemistry education platform for high school students featuring articles and premium courses.',
-      technologies: ['Flutter', 'Content Management', 'Payment Gateway'],
+          'Single-instructor chemistry e-learning app for high school students. Features video courses, PDF materials, exams, and advanced protection against screen recording and screenshots.',
+      technologies: ['Android', 'Video Streaming', 'Secure Content', 'Payment Gateway'],
       gradientColors: [0xFF3B82F6, 0xFF4F46E5],
       imagePath: 'assets/images/chembakr.png',
       playStoreUrl:
@@ -61,8 +61,8 @@ class PortfolioData {
     ProjectData(
       title: 'El Wahda',
       description:
-          'Educational platform supporting multiple teachers and instructors with comprehensive learning resources.',
-      technologies: ['Flutter', 'Multi-user System', 'Video Streaming'],
+          'Multi-instructor e-learning platform with video courses, PDF content, exams, and live sessions. Secured against screen recording and screenshots to protect instructor content.',
+      technologies: ['Android', 'Multi-Instructor', 'Video Streaming', 'Secure Content'],
       gradientColors: [0xFF6C63FF, 0xFF4F46E5],
       imagePath: 'assets/images/elwahda.png',
       playStoreUrl:
@@ -73,8 +73,8 @@ class PortfolioData {
     ProjectData(
       title: 'Excidia Academy',
       description:
-          'Academic learning platform featuring diverse instructors and comprehensive educational content.',
-      technologies: ['Flutter', 'Educational Content', 'Multi-Instructor'],
+          'Multi-instructor e-learning platform offering diverse courses, video lectures, PDF materials, and exams. Features advanced screen recording and screenshot protection.',
+      technologies: ['Android', 'iOS', 'Multi-Instructor', 'Video Streaming', 'Secure Content'],
       gradientColors: [0xFF3B82F6, 0xFF6C63FF],
       imagePath: 'assets/images/excidia.png',
       playStoreUrl:
@@ -86,8 +86,8 @@ class PortfolioData {
     ProjectData(
       title: 'Musafir',
       description:
-          'Transportation app connecting passengers with drivers across governorates. Supports Bus, SUV, and Sedan options with Google Maps integration.',
-      technologies: ['Flutter', 'Google Maps', 'Push Notifications'],
+          'Inter-city transportation app connecting passengers with drivers across governorates. Supports Bus, SUV, and Sedan options with Google Maps integration and real-time tracking.',
+      technologies: ['Android', 'Google Maps', 'Real-time Tracking', 'Push Notifications'],
       gradientColors: [0xFF4F46E5, 0xFF3B82F6],
       imagePath: 'assets/images/musafir.png',
       playStoreUrl:
@@ -98,8 +98,8 @@ class PortfolioData {
     ProjectData(
       title: 'Secondary Industrial Institute in Qurayyat',
       description:
-          'Employee tracking system for Technical and Vocational Training Organization in Saudi Arabia.',
-      technologies: ['Flutter Web', 'Firebase', 'Real-time Tracking'],
+          'Flutter Web employee tracking system for the Technical and Vocational Training Organization in Saudi Arabia with real-time attendance and location management.',
+      technologies: ['Web', 'Firebase', 'Real-time Tracking'],
       gradientColors: [0xFF6C63FF, 0xFF3B82F6],
       imagePath: 'assets/images/organization.png',
       liveDemoUrl: 'https://www.linkedin.com/posts/mohamed-alaa-03ba3b245_hi-secondary-industrial-institute-in-qurayyat-activity-7156062992357339136-ThJj',
@@ -109,8 +109,8 @@ class PortfolioData {
     ProjectData(
       title: 'Premium Courses',
       description:
-          'Professional learning platform offering premium courses with expert instructors and advanced features.',
-      technologies: ['Flutter', 'Course Management', 'Expert Content'],
+          'Multi-instructor premium e-learning platform with video lectures, PDF resources, exams, and content protected from screen recording and screenshots.',
+      technologies: ['Android', 'Multi-Instructor', 'Video Streaming', 'Secure Content'],
       gradientColors: [0xFF3B82F6, 0xFF4F46E5],
       imagePath: 'assets/images/premuim_courses.png',
       playStoreUrl:
@@ -121,8 +121,8 @@ class PortfolioData {
     ProjectData(
       title: 'Soap Box',
       description:
-          'Comprehensive laundry service app in Dubai for customers, laundries, admins, and delivery management.',
-      technologies: ['Flutter', 'Multi-user System', 'Delivery Tracking'],
+          'Full-featured laundry service app in Dubai supporting customers, laundry providers, admins, and delivery personnel with real-time order management and tracking.',
+      technologies: ['Android', 'iOS', 'Multi-user System', 'Delivery Tracking'],
       gradientColors: [0xFF4F46E5, 0xFF6C63FF],
       imagePath: 'assets/images/soap_box.png',
       playStoreUrl:
@@ -134,8 +134,8 @@ class PortfolioData {
     ProjectData(
       title: 'Yassrly',
       description:
-          'Educational platform offering video lectures and interactive chat between students and instructors.',
-      technologies: ['Flutter', 'Video Streaming', 'Real-time Chat'],
+          'Multi-instructor e-learning platform with video lectures, PDF content, exams, real-time chat between students and instructors, and screen recording protection.',
+      technologies: ['Android', 'Multi-Instructor', 'Video Streaming', 'Real-time Chat'],
       gradientColors: [0xFF6C63FF, 0xFF4F46E5],
       imagePath: 'assets/images/yassrly.png',
       playStoreUrl:
@@ -146,8 +146,8 @@ class PortfolioData {
     ProjectData(
       title: 'Kapper King',
       description:
-          'Professional barber shop management app with appointment booking and service customization.',
-      technologies: ['Flutter', 'Booking System', 'Service Management'],
+          'Barber shop booking app with appointment scheduling, service customization, and Stripe payment integration for seamless and secure online payments.',
+      technologies: ['Android', 'Booking System', 'Stripe Payment'],
       gradientColors: [0xFF3B82F6, 0xFF6C63FF],
       imagePath: 'assets/images/kapper_king.png',
       playStoreUrl:
@@ -158,8 +158,8 @@ class PortfolioData {
     ProjectData(
       title: 'Mham',
       description:
-          'Educational app for medical learning with video lectures and direct chat between students and doctors.',
-      technologies: ['Flutter', 'Video Streaming', 'Real-time Chat'],
+          'Single-instructor medical e-learning app with video courses, PDF materials, exams, and direct chat between students and doctors. Secured against screen recording and screenshots.',
+      technologies: ['iOS', 'Video Streaming', 'Secure Content', 'Real-time Chat'],
       gradientColors: [0xFF4F46E5, 0xFF3B82F6],
       imagePath: 'assets/images/mham.png',
       appStoreUrl: 'https://apps.apple.com/us/app/mham-medicine/id6705129986',
@@ -169,8 +169,8 @@ class PortfolioData {
     ProjectData(
       title: 'Oops Mobile',
       description:
-          'Mobile repair and sales platform offering smartphone services and accessories.',
-      technologies: ['Flutter', 'E-commerce', 'Service Management'],
+          'Mobile repair and sales platform offering smartphone repair services, accessories, and device management.',
+      technologies: ['E-commerce', 'Service Management'],
       gradientColors: [0xFF6C63FF, 0xFF3B82F6],
       imagePath: 'assets/images/oops.png',
       demoUrl: '',

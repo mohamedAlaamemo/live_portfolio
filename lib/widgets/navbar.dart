@@ -26,14 +26,14 @@ class _CustomNavBarState extends State<CustomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width > 900;
+    final isDesktop = MediaQuery.of(context).size.width > 1200;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: 72,
-          padding: EdgeInsets.symmetric(horizontal: isDesktop ? 48 : 20),
+          padding: EdgeInsets.symmetric(horizontal: isDesktop ? 40 : 20),
           decoration: BoxDecoration(
             color: backgroundColor.withOpacity(0.97),
             border: Border(
@@ -78,7 +78,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     onTap: () => widget.onMenuTap(item),
                   )).toList(),
                 ),
-                const SizedBox(width: 32),
+                const SizedBox(width: 16),
                 _DownloadCvButton(onPressed: () async {
                   final uri = Uri.parse(PortfolioData.cvDownloadUrl);
                   await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -168,8 +168,8 @@ class _NavItemState extends State<_NavItem> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 1),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -178,7 +178,7 @@ class _NavItemState extends State<_NavItem> {
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: active ? Colors.white : textSecondary,
                   fontWeight: active ? FontWeight.w600 : FontWeight.w400,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
               const SizedBox(height: 4),

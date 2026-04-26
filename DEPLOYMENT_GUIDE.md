@@ -22,7 +22,7 @@ push build web
 git init
 git remote add origin https://github.com/mohamedAlaamemo/live_portfolio.git
 git add .
-git commit -m "change app icon"
+git commit -m "responsive portfolio"
 git branch -M main
 git push -f origin main
 
