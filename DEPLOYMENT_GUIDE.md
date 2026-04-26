@@ -12,7 +12,7 @@
 # ارفع المشروع إلى GitHub
 git init
 git add .
-git commit -m "Initial portfolio commit"
+git commit -m "sort projects"
 git branch -M main
 git remote add origin https://github.com/yourusername/memo_portfolio.git
 git push -u origin main
@@ -22,7 +22,7 @@ push build web
 git init
 git remote add origin https://github.com/mohamedAlaamemo/live_portfolio.git
 git add .
-git commit -m "responsive portfolio"
+git commit -m "sort projects"
 git branch -M main
 git push -f origin main
 
