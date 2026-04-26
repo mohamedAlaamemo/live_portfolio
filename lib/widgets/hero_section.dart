@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
+import 'package:memo_portfolio/widgets/animations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -33,23 +34,30 @@ class HeroSection extends StatelessWidget {
               children: [
                 Expanded(flex: 55, child: _HeroContent(onScrollToSection: onScrollToSection)),
                 const SizedBox(width: 60),
-                Expanded(flex: 45, child: _HeroVisual()),
+                Expanded(flex: 45, child: StaggeredItem(
+                  index: 6, direction: StaggerDirection.fromRight, baseDelay: const Duration(milliseconds: 150),
+                  child: _HeroVisual(),
+                )),
               ],
             )
           : Column(
               children: [
                 if (isMobile) ...[
-                  _HeroVisual(),
+                  StaggeredItem(index: 0, direction: StaggerDirection.fromTop, baseDelay: const Duration(milliseconds: 100),
+                    child: _HeroVisual(),
+                  ),
                   const SizedBox(height: 32),
                   _HeroContent(centered: true, onScrollToSection: onScrollToSection),
                 ] else ...[
-                  // Tablet layout - keep side by side but adjust proportions
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(flex: 6, child: _HeroContent(onScrollToSection: onScrollToSection)),
                       const SizedBox(width: 40),
-                      Expanded(flex: 4, child: _HeroVisual()),
+                      Expanded(flex: 4, child: StaggeredItem(
+                        index: 6, direction: StaggerDirection.fromRight, baseDelay: const Duration(milliseconds: 150),
+                        child: _HeroVisual(),
+                      )),
                     ],
                   ),
                 ],
@@ -75,109 +83,121 @@ class _HeroContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: align,
       children: [
-        // "Hi, I'm"
-        Text(
-          PortfolioData.subtitle,
-          style: AppTextStyles.subtitle.copyWith(
-            fontSize: isDesktop ? 26 : 20,
-            color: primaryColor,
+        // "Hi, I'm" – من اليسار
+        StaggeredItem(index: 0, direction: StaggerDirection.fromLeft, baseDelay: const Duration(milliseconds: 150),
+          child: Text(
+            PortfolioData.subtitle,
+            style: AppTextStyles.subtitle.copyWith(
+              fontSize: isDesktop ? 26 : 20,
+              color: primaryColor,
+            ),
           ),
         ),
         const SizedBox(height: 8),
 
-        // Name (white, bold)
-        Text(
-          PortfolioData.name,
-          style: AppTextStyles.h1.copyWith(
-            fontSize: isDesktop ? 68 : (w > 768 ? 50 : 36),
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
+        // Name – من اليمين
+        StaggeredItem(index: 1, direction: StaggerDirection.fromRight, baseDelay: const Duration(milliseconds: 150),
+          child: Text(
+            PortfolioData.name,
+            style: AppTextStyles.h1.copyWith(
+              fontSize: isDesktop ? 68 : (w > 768 ? 50 : 36),
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+            ),
+            textAlign: tAlign,
           ),
-          textAlign: tAlign,
         ),
         const SizedBox(height: 12),
 
-        // Title with gradient shader
-        ShaderMask(
-          shaderCallback: (b) => primaryGradient.createShader(b),
-          child: Text(
-            PortfolioData.title,
-            style: AppTextStyles.h3.copyWith(
-              fontSize: isDesktop ? 38 : (w > 768 ? 28 : 22),
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
+        // Title – من الأعلى
+        StaggeredItem(index: 2, direction: StaggerDirection.fromTop, baseDelay: const Duration(milliseconds: 150),
+          child: ShaderMask(
+            shaderCallback: (b) => primaryGradient.createShader(b),
+            child: Text(
+              PortfolioData.title,
+              style: AppTextStyles.h3.copyWith(
+                fontSize: isDesktop ? 38 : (w > 768 ? 28 : 22),
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: tAlign,
             ),
-            textAlign: tAlign,
           ),
         ),
         const SizedBox(height: 24),
 
-        // Description
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
-          child: Text(
-            PortfolioData.description,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontSize: isDesktop ? 18 : 16,
+        // Description – من الأسفل
+        StaggeredItem(index: 3, direction: StaggerDirection.fromBottom, baseDelay: const Duration(milliseconds: 150),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Text(
+              PortfolioData.description,
+              style: AppTextStyles.bodyLarge.copyWith(
+                fontSize: isDesktop ? 18 : 16,
+              ),
+              textAlign: tAlign,
             ),
-            textAlign: tAlign,
           ),
         ),
         const SizedBox(height: 40),
 
-        // Action buttons
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          alignment: centered ? WrapAlignment.center : WrapAlignment.start,
-          children: [
-            _PrimaryBtn(
-              label: "View My Work",
-              icon: Icons.arrow_forward_rounded,
-              onTap: () {
-                if (onScrollToSection != null) {
-                  onScrollToSection!('Projects');
-                }
-              },
-            ),
-            _SecondaryBtn(
-              label: "Contact Me",
-              icon: Icons.phone,
-              onTap: () => _launchUrl('tel:${PortfolioData.phone}'),
-            ),
-          ],
+        // Action buttons – من اليسار
+        StaggeredItem(index: 4, direction: StaggerDirection.fromLeft, baseDelay: const Duration(milliseconds: 150),
+          child: Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            alignment: centered ? WrapAlignment.center : WrapAlignment.start,
+            children: [
+              _PrimaryBtn(
+                label: "View My Work",
+                icon: Icons.arrow_forward_rounded,
+                onTap: () {
+                  if (onScrollToSection != null) {
+                    onScrollToSection!('Projects');
+                  }
+                },
+              ),
+              _SecondaryBtn(
+                label: "Contact Me",
+                icon: Icons.phone,
+                onTap: () => _launchUrl('tel:${PortfolioData.phone}'),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 40),
 
-        // Social row
-        Row(
-          mainAxisAlignment:
-              centered ? MainAxisAlignment.center : MainAxisAlignment.start,
-          children: [
-            Text(
-              "Follow me",
-              style: AppTextStyles.bodySmall
-                  .copyWith(color: textMuted, fontSize: 14),
-            ),
-            const SizedBox(width: 16),
-            _SocialBtn(
-              svgUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg',
-              tooltip: "LinkedIn",
-              onTap: () => _launchUrl(PortfolioData.linkedinUrl),
-            ),
-            const SizedBox(width: 10),
-            _SocialBtn(
-              svgUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
-              tooltip: "GitHub",
-              onTap: () => _launchUrl(PortfolioData.githubUrl),
-            ),
-            const SizedBox(width: 10),
-            _SocialBtn(
-              svgUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg',
-              tooltip: "WhatsApp",
-              onTap: () => _launchUrl(PortfolioData.whatsappUrl),
-            ),
-          ],
+        // Social row – من اليمين
+        StaggeredItem(index: 5, direction: StaggerDirection.fromRight, baseDelay: const Duration(milliseconds: 150),
+          child: Row(
+            mainAxisAlignment:
+                centered ? MainAxisAlignment.center : MainAxisAlignment.start,
+            children: [
+              Text(
+                "Follow me",
+                style: AppTextStyles.bodySmall
+                    .copyWith(color: textMuted, fontSize: 14),
+              ),
+              const SizedBox(width: 16),
+              _SocialBtn(
+                svgUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg',
+                tooltip: "LinkedIn",
+                onTap: () => _launchUrl(PortfolioData.linkedinUrl),
+              ),
+              const SizedBox(width: 10),
+              _SocialBtn(
+                svgUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+                tooltip: "GitHub",
+                onTap: () => _launchUrl(PortfolioData.githubUrl),
+              ),
+              const SizedBox(width: 10),
+              _SocialBtn(
+                svgUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg',
+                tooltip: "WhatsApp",
+                onTap: () => _launchUrl(PortfolioData.whatsappUrl),
+              ),
+            ],
+          ),
         ),
       ],
     );

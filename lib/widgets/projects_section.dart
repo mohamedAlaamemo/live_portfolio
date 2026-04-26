@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
+import 'package:memo_portfolio/widgets/animations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectsSection extends StatelessWidget {
@@ -81,7 +82,12 @@ class ProjectsSection extends StatelessWidget {
                 ),
                 itemCount: projects.length,
                 itemBuilder: (context, index) {
-                  return _ProjectCard(project: projects[index]);
+                  return StaggeredItem(
+                    index: index,
+                    direction: StaggerDirection.random,
+                    baseDelay: const Duration(milliseconds: 100),
+                    child: _ProjectCard(project: projects[index]),
+                  );
                 },
               );
             }),

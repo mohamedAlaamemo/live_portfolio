@@ -8,6 +8,7 @@ import 'package:memo_portfolio/widgets/projects_section.dart';
 import 'package:memo_portfolio/widgets/experience_section.dart';
 import 'package:memo_portfolio/widgets/contact_section.dart';
 import 'package:memo_portfolio/widgets/footer.dart';
+import 'package:memo_portfolio/widgets/animations.dart';
 
 void main() {
   runApp(const PortfolioApp());
@@ -90,22 +91,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       backgroundColor: backgroundColor,
       body: Stack(
         children: [
-          // ── Ambient background glow blobs ──
-          Positioned(
-            top: -120,
-            right: -120,
-            child: _GlowBlob(color: primaryColor, size: 500, opacity: 0.07),
-          ),
-          Positioned(
-            top: 400,
-            left: -160,
-            child: _GlowBlob(color: accentColor, size: 400, opacity: 0.06),
-          ),
-          Positioned(
-            bottom: 200,
-            right: -100,
-            child: _GlowBlob(color: primaryColor, size: 350, opacity: 0.05),
-          ),
+          // ── Enhanced Animated Background ──
+          const AnimatedBackgroundBlobs(),
+          const FloatingParticles(),
 
           // ── Scrollable content (with top padding for sticky nav) ──
           SingleChildScrollView(
@@ -115,35 +103,68 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               children: [
                 const SizedBox(height: 72), // navbar height offset
 
-                // Hero
-                SizedBox(key: _homeKey, child: HeroSection(onScrollToSection: _scrollTo)),
+                // Hero section - يظهر من تحت (fadeInUp)
+                AnimatedSection(
+                  key: _homeKey,
+                  animationType: AnimationType.fadeInUp,
+                  delay: const Duration(milliseconds: 100),
+                  child: HeroSection(onScrollToSection: _scrollTo),
+                ),
 
-                // Skills bar
-                SizedBox(key: _skillsKey, child: const SkillsSection()),
+                // Skills section - يظهر من اليسار (fadeInLeft)
+                AnimatedSection(
+                  key: _skillsKey,
+                  animationType: AnimationType.fadeInLeft,
+                  delay: const Duration(milliseconds: 300),
+                  child: const SkillsSection(),
+                ),
 
-                // Projects
-                SizedBox(key: _projectsKey, child: const ProjectsSection()),
+                // Projects section - يظهر من اليمين (fadeInRight)
+                AnimatedSection(
+                  key: _projectsKey,
+                  animationType: AnimationType.fadeInRight,
+                  delay: const Duration(milliseconds: 500),
+                  child: const ProjectsSection(),
+                ),
 
-                // Experience
-                SizedBox(key: _experienceKey, child: const ExperienceSection()),
+                // Experience section - يظهر من فوق (fadeInDown)
+                AnimatedSection(
+                  key: _experienceKey,
+                  animationType: AnimationType.fadeInDown,
+                  delay: const Duration(milliseconds: 700),
+                  child: const ExperienceSection(),
+                ),
 
                 const SizedBox(height: 32),
 
-                // Contact
-                SizedBox(key: _contactKey, child: const ContactSection()),
+                // Contact section - يظهر بتكبير من المركز (scaleIn)
+                AnimatedSection(
+                  key: _contactKey,
+                  animationType: AnimationType.scaleIn,
+                  delay: const Duration(milliseconds: 900),
+                  child: const ContactSection(),
+                ),
 
-                // Footer
-                const Footer(),
+                // Footer - يظهر من تحت مع حركة انزلاق (slideInUp)
+                AnimatedSection(
+                  animationType: AnimationType.slideInUp,
+                  delay: const Duration(milliseconds: 1100),
+                  child: const Footer(),
+                ),
               ],
             ),
           ),
 
-          // ── Sticky Navbar (on top) ──
+          // ── Sticky Navbar (on top) with slide down animation ──
           Positioned(
             top: 0, left: 0, right: 0,
-            child: CustomNavBar(
-              selectedSection: _activeSection,
-              onMenuTap: _scrollTo,
+            child: AnimatedSection(
+              animationType: AnimationType.fadeInDown,
+              delay: const Duration(milliseconds: 50),
+              child: CustomNavBar(
+                selectedSection: _activeSection,
+                onMenuTap: _scrollTo,
+              ),
             ),
           ),
         ],
@@ -158,26 +179,3 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 }
 
-// ── Ambient glow helper ───────────────────────────────────────────────────────
-class _GlowBlob extends StatelessWidget {
-  final Color color;
-  final double size;
-  final double opacity;
-
-  const _GlowBlob({required this.color, required this.size, required this.opacity});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [color.withOpacity(opacity), Colors.transparent],
-          stops: const [0.0, 1.0],
-        ),
-      ),
-    );
-  }
-}

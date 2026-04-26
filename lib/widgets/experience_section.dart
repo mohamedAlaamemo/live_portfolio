@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
+import 'package:memo_portfolio/widgets/animations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExperienceSection extends StatelessWidget {
@@ -55,10 +56,15 @@ class ExperienceSection extends StatelessWidget {
           const SizedBox(height: 40),
 
           // Experience timeline
-          ...PortfolioData.experiences.asMap().entries.map((e) => _ExperienceCard(
-                experience: e.value,
-                isLast: e.key == PortfolioData.experiences.length - 1,
-                isDesktop: isDesktop,
+          ...PortfolioData.experiences.asMap().entries.map((e) => StaggeredItem(
+                index: e.key,
+                direction: StaggerDirection.alternating,
+                baseDelay: const Duration(milliseconds: 150),
+                child: _ExperienceCard(
+                  experience: e.value,
+                  isLast: e.key == PortfolioData.experiences.length - 1,
+                  isDesktop: isDesktop,
+                ),
               )),
 
           const SizedBox(height: 48),
@@ -66,10 +72,15 @@ class ExperienceSection extends StatelessWidget {
           // Activities
           _sectionSubtitle('Activities', isDesktop),
           const SizedBox(height: 24),
-          ...PortfolioData.activities.asMap().entries.map((e) => _ActivityCard(
-                activity: e.value,
-                isLast: e.key == PortfolioData.activities.length - 1,
-                isDesktop: isDesktop,
+          ...PortfolioData.activities.asMap().entries.map((e) => StaggeredItem(
+                index: e.key,
+                direction: StaggerDirection.random,
+                baseDelay: const Duration(milliseconds: 120),
+                child: _ActivityCard(
+                  activity: e.value,
+                  isLast: e.key == PortfolioData.activities.length - 1,
+                  isDesktop: isDesktop,
+                ),
               )),
 
           const SizedBox(height: 48),
@@ -77,7 +88,12 @@ class ExperienceSection extends StatelessWidget {
           // Education
           _sectionSubtitle('Education', isDesktop),
           const SizedBox(height: 24),
-          ...PortfolioData.education.map((e) => _EducationCard(edu: e, isDesktop: isDesktop)),
+          ...PortfolioData.education.asMap().entries.map((e) => StaggeredItem(
+                index: e.key,
+                direction: StaggerDirection.alternating,
+                baseDelay: const Duration(milliseconds: 150),
+                child: _EducationCard(edu: e.value, isDesktop: isDesktop),
+              )),
         ],
       ),
     );

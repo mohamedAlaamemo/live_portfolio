@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
+import 'package:memo_portfolio/widgets/animations.dart';
 
 // ── per-category config (no pink) ────────────────────────────────────────────
 class _Cfg {
@@ -71,11 +72,16 @@ class SkillsSection extends StatelessWidget {
           const SizedBox(height: 40),
 
           // ── Skill categories ─────────────────────────────────────────────
-          ...List.generate(cats.length, (i) => _SkillRow(
-            category: cats[i],
-            cfg: _cfgs[i],
-            isDesktop: isDesktop,
-            isLast: i == cats.length - 1,
+          ...List.generate(cats.length, (i) => StaggeredItem(
+            index: i,
+            direction: StaggerDirection.alternating,
+            baseDelay: const Duration(milliseconds: 150),
+            child: _SkillRow(
+              category: cats[i],
+              cfg: _cfgs[i],
+              isDesktop: isDesktop,
+              isLast: i == cats.length - 1,
+            ),
           )),
         ],
       ),
