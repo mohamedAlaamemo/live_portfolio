@@ -21,6 +21,43 @@ class PortfolioData {
   // Projects Data
   static const List<ProjectData> projects = [
     ProjectData(
+      title: 'Musafir',
+      description:
+      'Inter-city transportation app connecting passengers with drivers across governorates. Supports Bus, SUV, and Sedan options with Google Maps integration and real-time tracking.',
+      technologies: ['Android', 'Google Maps', 'Real-time Tracking', 'Push Notifications'],
+      gradientColors: [0xFF4F46E5, 0xFF3B82F6],
+      imagePath: 'assets/images/musafir.png',
+      playStoreUrl:
+      'https://play.google.com/store/apps/details?id=com.musafir_1234.android.abc',
+      demoUrl: '',
+      githubUrl: '',
+    ),
+    ProjectData(
+      title: 'Blink Mart',
+      description:
+      'Multi-vendor delivery app connecting customers with local shops for vegetables, grocery, meat, and poultry. Real-time order tracking and seamless checkout experience.',
+      technologies: ['Android', 'iOS', 'Multi-vendor', 'Real-time Tracking'],
+      gradientColors: [0xFF4F46E5, 0xFF6C63FF],
+      imagePath: 'assets/images/blink_mart.png',
+      playStoreUrl:
+      'https://play.google.com/store/apps/details?id=com.AshalNetworkCompany.blinkmart',
+      appStoreUrl: 'https://apps.apple.com/us/app/blink-mart-shop-smart/id6760730193',
+      demoUrl: '',
+      githubUrl: '',
+    ),
+    ProjectData(
+      title: 'Yassrly',
+      description:
+      'Multi-instructor e-learning platform with video lectures, PDF content, exams, real-time chat between students and instructors, and screen recording protection.',
+      technologies: ['Android', 'Multi-Instructor', 'Video Streaming', 'Real-time Chat'],
+      gradientColors: [0xFF6C63FF, 0xFF4F46E5],
+      imagePath: 'assets/images/yassrly.png',
+      playStoreUrl:
+      'https://play.google.com/store/apps/details?id=com.memo.yassrly.mobisite',
+      demoUrl: '',
+      githubUrl: '',
+    ),
+    ProjectData(
       title: 'Ashal HR',
       description:
           'Comprehensive HR management system for employee tracking, attendance, payroll, and organizational management with real-time location tracking via Google Maps.',
@@ -33,19 +70,7 @@ class PortfolioData {
       demoUrl: '',
       githubUrl: '',
     ),
-    ProjectData(
-      title: 'Blink Mart',
-      description:
-          'Multi-vendor delivery app connecting customers with local shops for vegetables, grocery, meat, and poultry. Real-time order tracking and seamless checkout experience.',
-      technologies: ['Android', 'iOS', 'Multi-vendor', 'Real-time Tracking'],
-      gradientColors: [0xFF4F46E5, 0xFF6C63FF],
-      imagePath: 'assets/images/blink_mart.png',
-      playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.AshalNetworkCompany.blinkmart',
-      appStoreUrl: 'https://apps.apple.com/us/app/blink-mart-shop-smart/id6760730193',
-      demoUrl: '',
-      githubUrl: '',
-    ),
+
     ProjectData(
       title: 'ChemBakr',
       description:
@@ -71,6 +96,19 @@ class PortfolioData {
       githubUrl: '',
     ),
     ProjectData(
+      title: 'Soap Box',
+      description:
+      'Full-featured laundry service app in Dubai supporting customers, laundry providers, admins, and delivery personnel with real-time order management and tracking.',
+      technologies: ['Android', 'iOS', 'Multi-user System', 'Delivery Tracking'],
+      gradientColors: [0xFF4F46E5, 0xFF6C63FF],
+      imagePath: 'assets/images/soap_box.png',
+      playStoreUrl:
+      'https://play.google.com/store/apps/details?id=com.ashalNetworkCompany.soapbox',
+      appStoreUrl: 'https://apps.apple.com/us/app/soap-box-%D8%B3%D9%88%D8%A8-%D8%A8%D9%88%D9%83%D8%B3/id6756975044',
+      demoUrl: '',
+      githubUrl: '',
+    ),
+    ProjectData(
       title: 'Excidia Academy',
       description:
           'Multi-instructor e-learning platform offering diverse courses, video lectures, PDF materials, and exams. Features advanced screen recording and screenshot protection.',
@@ -83,18 +121,7 @@ class PortfolioData {
       demoUrl: '',
       githubUrl: '',
     ),
-    ProjectData(
-      title: 'Musafir',
-      description:
-          'Inter-city transportation app connecting passengers with drivers across governorates. Supports Bus, SUV, and Sedan options with Google Maps integration and real-time tracking.',
-      technologies: ['Android', 'Google Maps', 'Real-time Tracking', 'Push Notifications'],
-      gradientColors: [0xFF4F46E5, 0xFF3B82F6],
-      imagePath: 'assets/images/musafir.png',
-      playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.musafir_1234.android.abc',
-      demoUrl: '',
-      githubUrl: '',
-    ),
+
     ProjectData(
       title: 'Secondary Industrial Institute in Qurayyat',
       description:
@@ -118,31 +145,8 @@ class PortfolioData {
       demoUrl: '',
       githubUrl: '',
     ),
-    ProjectData(
-      title: 'Soap Box',
-      description:
-          'Full-featured laundry service app in Dubai supporting customers, laundry providers, admins, and delivery personnel with real-time order management and tracking.',
-      technologies: ['Android', 'iOS', 'Multi-user System', 'Delivery Tracking'],
-      gradientColors: [0xFF4F46E5, 0xFF6C63FF],
-      imagePath: 'assets/images/soap_box.png',
-      playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.ashalNetworkCompany.soapbox',
-      appStoreUrl: 'https://apps.apple.com/us/app/soap-box-%D8%B3%D9%88%D8%A8-%D8%A8%D9%88%D9%83%D8%B3/id6756975044',
-      demoUrl: '',
-      githubUrl: '',
-    ),
-    ProjectData(
-      title: 'Yassrly',
-      description:
-          'Multi-instructor e-learning platform with video lectures, PDF content, exams, real-time chat between students and instructors, and screen recording protection.',
-      technologies: ['Android', 'Multi-Instructor', 'Video Streaming', 'Real-time Chat'],
-      gradientColors: [0xFF6C63FF, 0xFF4F46E5],
-      imagePath: 'assets/images/yassrly.png',
-      playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.memo.yassrly.mobisite',
-      demoUrl: '',
-      githubUrl: '',
-    ),
+
+
     ProjectData(
       title: 'Kapper King',
       description:
