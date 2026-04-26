@@ -141,9 +141,9 @@ class _HeroContent extends StatelessWidget {
               },
             ),
             _SecondaryBtn(
-              label: "Contact Me",
-              icon: Icons.phone,
-              onTap: () => _launchUrl('tel:${PortfolioData.phone}'),
+              label: "Download CV",
+              icon: Icons.download_rounded,
+              onTap: () => _launchUrl(PortfolioData.cvDownloadUrl),
             ),
           ],
         ),

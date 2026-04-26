@@ -15,6 +15,8 @@ class PortfolioData {
       'aa-03ba3b245/';
   static const String githubUrl = 'https://github.com/mohamedAlaamemo';
   static const String whatsappUrl = 'https://wa.me/201003047498';
+  static const String cvDownloadUrl =
+      'https://drive.google.com/uc?export=download&id=18uLCYkZLNbufVwpvb1azX2EW7rsqRJmx';
 
   // Projects Data
   static const List<ProjectData> projects = [

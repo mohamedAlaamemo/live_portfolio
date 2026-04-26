@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
 import 'package:memo_portfolio/data/portfolio_data.dart';
+import 'package:url_launcher/url_launcher.dart';
 class CustomNavBar extends StatefulWidget {
   final Function(String) onMenuTap;
   final String selectedSection;
@@ -78,7 +79,10 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   )).toList(),
                 ),
                 const SizedBox(width: 32),
-                _DownloadCvButton(onPressed: () {}),
+                _DownloadCvButton(onPressed: () async {
+                  final uri = Uri.parse(PortfolioData.cvDownloadUrl);
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                }),
               ] else ...[
                 GestureDetector(
                   onTap: () => setState(() => isMobileMenuOpen = !isMobileMenuOpen),
@@ -126,7 +130,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 )),
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: _DownloadCvButton(onPressed: () {}),
+                  child: _DownloadCvButton(onPressed: () async {
+                    final uri = Uri.parse(PortfolioData.cvDownloadUrl);
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    setState(() => isMobileMenuOpen = false);
+                  }),
                 ),
               ],
             ),

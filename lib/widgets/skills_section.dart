@@ -1,31 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:memo_portfolio/constants/colors.dart';
 import 'package:memo_portfolio/constants/text_styles.dart';
+import 'package:memo_portfolio/data/portfolio_data.dart';
 
-// ── Skill item model ──────────────────────────────────────────────────────────
-class _Skill {
-  final String name;
-  final String? svgUrl;   // null → use custom widget
+// ── per-category config (no pink) ────────────────────────────────────────────
+class _Cfg {
+  final IconData icon;
   final Color color;
-  final bool isCustom;
-  final String? customLabel; // for badge-style icons
-
-  const _Skill(this.name, this.svgUrl, this.color,
-      {this.isCustom = false, this.customLabel});
+  const _Cfg(this.icon, this.color);
 }
 
-const _skills = <_Skill>[
-  _Skill('Flutter',  'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',   Color(0xFF54C5F8)),
-  _Skill('Dart',     'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg',         Color(0xFF01589B)),
-  _Skill('Firebase', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',    Color(0xFFFFCA28)),
-  _Skill('BLoC',     null, Color(0xFF4ECDC4),   isCustom: true, customLabel: 'B'),
-  _Skill('REST API', null, Color(0xFF6366F1),   isCustom: true, customLabel: 'API'),
-  _Skill('Dio',      null, Color(0xFF818CF8),   isCustom: true, customLabel: 'DIO'),
-  _Skill('Git',      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',           Color(0xFFF05032)),
-  _Skill('SQLite',   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg',     Color(0xFF44A1C9)),
-  _Skill('Figma',    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',       Color(0xFFEC4899)),
-  _Skill('Maps',     null, Color(0xFF34D399),   isCustom: true, customLabel: '📍'),
+const List<_Cfg> _cfgs = [
+  _Cfg(Icons.terminal_rounded,       Color(0xFF38BDF8)), // Core      – sky
+  _Cfg(Icons.psychology_rounded,     Color(0xFF818CF8)), // CS        – indigo
+  _Cfg(Icons.phone_android_rounded,  Color(0xFF34D399)), // Flutter   – emerald
+  _Cfg(Icons.account_tree_rounded,   Color(0xFFF59E0B)), // Arch      – amber
+  _Cfg(Icons.translate_rounded,      Color(0xFF94A3B8)), // Languages – slate
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -38,13 +28,15 @@ class SkillsSection extends StatelessWidget {
     final isDesktop = w > 1024;
     final isTablet  = w > 768 && w <= 1024;
     final hPad      = isDesktop ? 80.0 : (isTablet ? 40.0 : 20.0);
+    final cats      = PortfolioData.skillCategories;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 60),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,       // ← title LEFT
         children: [
-          // ── Title ──────────────────────────────────────────────────────────
+
+          // ── Title (left-aligned) ──────────────────────────────────────────
           RichText(
             text: TextSpan(children: [
               TextSpan(
@@ -66,6 +58,8 @@ class SkillsSection extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 8),
+
+          // subtle underline accent
           Container(
             width: isDesktop ? 56 : 44,
             height: 3,
@@ -74,222 +68,215 @@ class SkillsSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 36),
+          const SizedBox(height: 40),
 
-          // ── Skill bar ──────────────────────────────────────────────────────
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F1624),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.08)),
+          // ── Skill categories ─────────────────────────────────────────────
+          ...List.generate(cats.length, (i) => _SkillRow(
+            category: cats[i],
+            cfg: _cfgs[i],
+            isDesktop: isDesktop,
+            isLast: i == cats.length - 1,
+          )),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── One skill row ────────────────────────────────────────────────────────────
+class _SkillRow extends StatefulWidget {
+  final SkillCategory category;
+  final _Cfg cfg;
+  final bool isDesktop;
+  final bool isLast;
+
+  const _SkillRow({
+    required this.category,
+    required this.cfg,
+    required this.isDesktop,
+    required this.isLast,
+  });
+
+  @override
+  State<_SkillRow> createState() => _SkillRowState();
+}
+
+class _SkillRowState extends State<_SkillRow> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent  = widget.cfg.color;
+    final w       = MediaQuery.of(context).size.width;
+    final isMobile = w < 700;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── row ──────────────────────────────────────────────────────────
+        MouseRegion(
+          onEnter: (_) => setState(() => _hovered = true),
+          onExit:  (_) => setState(() => _hovered = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.isDesktop ? 20 : 14,
+              vertical:   widget.isDesktop ? 20 : 16,
             ),
-            child: isDesktop
-                // Desktop: all visible, centered
-                ? _SkillBarRow(skills: _skills, isDesktop: true)
-                // Mobile/tablet: horizontally scrollable
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: _SkillBarRow(skills: _skills, isDesktop: false),
+            decoration: BoxDecoration(
+              color: _hovered
+                  ? accent.withOpacity(0.05)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(14),
+              border: Border(
+                left: BorderSide(
+                  color: _hovered ? accent : accent.withOpacity(0.35),
+                  width: 3,
+                ),
+              ),
+            ),
+            child: isMobile
+                // mobile: stacked
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _Header(cfg: widget.cfg, name: widget.category.name,
+                          isDesktop: widget.isDesktop),
+                      const SizedBox(height: 12),
+                      _ChipWrap(skills: widget.category.skills,
+                          accent: accent, isDesktop: widget.isDesktop),
+                    ],
+                  )
+                // desktop/tablet: side by side
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: widget.isDesktop ? 210 : 170,
+                        child: _Header(cfg: widget.cfg, name: widget.category.name,
+                            isDesktop: widget.isDesktop),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: _ChipWrap(skills: widget.category.skills,
+                            accent: accent, isDesktop: widget.isDesktop),
+                      ),
+                    ],
                   ),
           ),
+        ),
 
-          const SizedBox(height: 20),
-
-          // ── Additional skills as compact chips ─────────────────────────────
-          _AdditionalSkills(isDesktop: isDesktop),
-        ],
-      ),
+        // ── divider (not after last) ──────────────────────────────────────
+        if (!widget.isLast)
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: widget.isDesktop ? 4 : 2,
+              horizontal: widget.isDesktop ? 20 : 14,
+            ),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.white.withOpacity(0.05),
+            ),
+          ),
+      ],
     );
   }
 }
 
-// ── Bar Row ───────────────────────────────────────────────────────────────────
-class _SkillBarRow extends StatelessWidget {
-  final List<_Skill> skills;
+// ── Category header (icon + label) ───────────────────────────────────────────
+class _Header extends StatelessWidget {
+  final _Cfg cfg;
+  final String name;
   final bool isDesktop;
-  const _SkillBarRow({required this.skills, required this.isDesktop});
+  const _Header({required this.cfg, required this.name, required this.isDesktop});
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisAlignment: isDesktop
-            ? MainAxisAlignment.spaceEvenly
-            : MainAxisAlignment.start,
-        children: [
-          for (int i = 0; i < skills.length; i++) ...[
-            _SkillTile(skill: skills[i], isDesktop: isDesktop),
-            if (i < skills.length - 1)
-              Container(
-                width: 1,
-                color: Colors.white.withOpacity(0.07),
-              ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-// ── Skill Tile ────────────────────────────────────────────────────────────────
-class _SkillTile extends StatefulWidget {
-  final _Skill skill;
-  final bool isDesktop;
-  const _SkillTile({required this.skill, required this.isDesktop});
-
-  @override
-  State<_SkillTile> createState() => _SkillTileState();
-}
-
-class _SkillTileState extends State<_SkillTile> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = widget.skill;
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
-      cursor: SystemMouseCursors.click,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(
-          horizontal: widget.isDesktop ? 28 : 22,
-          vertical:   widget.isDesktop ? 22 : 18,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width:  isDesktop ? 38 : 32,
+          height: isDesktop ? 38 : 32,
+          decoration: BoxDecoration(
+            color: cfg.color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Icon(cfg.icon, color: cfg.color, size: isDesktop ? 18 : 15),
         ),
-        decoration: BoxDecoration(
-          color: _hovered ? s.color.withOpacity(0.08) : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // icon
-            AnimatedScale(
-              duration: const Duration(milliseconds: 200),
-              scale: _hovered ? 1.15 : 1.0,
-              child: SizedBox(
-                width:  widget.isDesktop ? 28 : 24,
-                height: widget.isDesktop ? 28 : 24,
-                child: _buildIcon(s, widget.isDesktop),
-              ),
+        const SizedBox(width: 10),
+        Flexible(
+          child: Text(
+            name,
+            style: AppTextStyles.bodyMedium.copyWith(
+              fontSize: isDesktop ? 14 : 12,
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.1,
             ),
-            SizedBox(width: widget.isDesktop ? 10 : 8),
-            // name
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              style: AppTextStyles.bodyMedium.copyWith(
-                fontSize: widget.isDesktop ? 15 : 13,
-                color: _hovered ? Colors.white : Colors.white.withOpacity(0.7),
-                fontWeight: _hovered ? FontWeight.w600 : FontWeight.w400,
-              ),
-              child: Text(s.name),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIcon(_Skill s, bool isDesktop) {
-    if (s.isCustom) {
-      // Badge-style icon
-      return Container(
-        decoration: BoxDecoration(
-          color: s.color.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: s.color.withOpacity(0.4), width: 1),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          s.customLabel ?? '',
-          style: TextStyle(
-            color: s.color,
-            fontSize: (s.customLabel?.length ?? 1) > 2 ? 7 : 9,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.3,
           ),
         ),
+      ],
+    );
+  }
+}
+
+// ── Chip wrap ─────────────────────────────────────────────────────────────────
+class _ChipWrap extends StatelessWidget {
+  final List<String> skills;
+  final Color accent;
+  final bool isDesktop;
+  const _ChipWrap({required this.skills, required this.accent, required this.isDesktop});
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: skills
+            .map((s) => _Chip(label: s, accent: accent, isDesktop: isDesktop))
+            .toList(),
       );
-    }
-    // SVG icon
-    return SvgPicture.network(
-      s.svgUrl!,
-      fit: BoxFit.contain,
-      placeholderBuilder: (_) => Container(
-        decoration: BoxDecoration(
-          color: s.color.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Icon(Icons.code_rounded, color: s.color, size: 16),
-      ),
-    );
-  }
 }
 
-// ── Additional skills (compact chips below the bar) ───────────────────────────
-class _AdditionalSkills extends StatelessWidget {
-  final bool isDesktop;
-  const _AdditionalSkills({required this.isDesktop});
-
-  static const _extra = [
-    'MVVM', 'Clean Architecture', 'BLoC / Cubit', 'Dependency Injection',
-    'Caching APIs', 'Hive', 'Shared Preferences', 'Local Notifications',
-    'FCM', 'Paymob', 'Stripe', 'Localisation', 'Null Safety',
-    'OOP', 'Data Structures', 'Algorithms', 'SOLID Principles',
-    'Arabic (Native)', 'English',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: _extra.map((s) => _ExtraChip(label: s, isDesktop: isDesktop)).toList(),
-    );
-  }
-}
-
-class _ExtraChip extends StatefulWidget {
+// ── Chip ──────────────────────────────────────────────────────────────────────
+class _Chip extends StatefulWidget {
   final String label;
+  final Color accent;
   final bool isDesktop;
-  const _ExtraChip({required this.label, required this.isDesktop});
+  const _Chip({required this.label, required this.accent, required this.isDesktop});
 
   @override
-  State<_ExtraChip> createState() => _ExtraChipState();
+  State<_Chip> createState() => _ChipState();
 }
 
-class _ExtraChipState extends State<_ExtraChip> {
+class _ChipState extends State<_Chip> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final a = widget.accent;
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit:  (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         padding: EdgeInsets.symmetric(
-          horizontal: widget.isDesktop ? 12 : 10,
-          vertical:   widget.isDesktop ? 6  : 5,
+          horizontal: widget.isDesktop ? 12 : 9,
+          vertical:   widget.isDesktop ? 6  : 4,
         ),
         decoration: BoxDecoration(
-          color: _hovered
-              ? primaryColor.withOpacity(0.12)
-              : Colors.white.withOpacity(0.04),
+          color:  _hovered ? a.withOpacity(0.15) : a.withOpacity(0.07),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: _hovered
-                ? primaryColor.withOpacity(0.45)
-                : Colors.white.withOpacity(0.08),
+            color: _hovered ? a.withOpacity(0.55) : a.withOpacity(0.2),
             width: 1,
           ),
         ),
         child: Text(
           widget.label,
           style: AppTextStyles.caption.copyWith(
-            color: _hovered ? Colors.white : Colors.white.withOpacity(0.55),
+            color: _hovered ? Colors.white : a.withOpacity(0.85),
             fontWeight: FontWeight.w500,
             fontSize: widget.isDesktop ? 12 : 11,
           ),

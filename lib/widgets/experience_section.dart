@@ -19,30 +19,37 @@ class ExperienceSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section title
-          Center(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'My ',
-                    style: AppTextStyles.h3.copyWith(
-                      fontSize: isDesktop ? 36 : 28,
-                      color: Colors.white,
-                    ),
+          // Section title – left aligned
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'My ',
+                  style: AppTextStyles.h3.copyWith(
+                    fontSize: isDesktop ? 36 : 28,
+                    color: Colors.white,
                   ),
-                  TextSpan(
-                    text: 'Experience',
-                    style: AppTextStyles.h3.copyWith(
-                      fontSize: isDesktop ? 36 : 28,
-                      foreground: Paint()
-                        ..shader = primaryGradient.createShader(
-                          const Rect.fromLTWH(0, 0, 200, 40),
-                        ),
-                    ),
+                ),
+                TextSpan(
+                  text: 'Experience',
+                  style: AppTextStyles.h3.copyWith(
+                    fontSize: isDesktop ? 36 : 28,
+                    foreground: Paint()
+                      ..shader = primaryGradient.createShader(
+                        const Rect.fromLTWH(0, 0, 240, 40),
+                      ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: isDesktop ? 56 : 44,
+            height: 3,
+            decoration: BoxDecoration(
+              gradient: primaryGradient,
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
           const SizedBox(height: 40),
