@@ -83,6 +83,19 @@ class PortfolioData {
       demoUrl: '',
       githubUrl: '',
     ),
+
+    ProjectData(
+      title: 'مستشارك القانوني',
+      description:
+          'Your Legal Advisor application is an application that aims to provide innovative and easy-to-use legal services, directed to individuals and companies who need quick and direct legal advice.',
+      technologies: [ 'voice call', 'Payment Gateway','Real-time Chat'],
+      gradientColors: [0xFF3B82F6, 0xFF4F46E5],
+      imagePath: 'assets/images/lawyer_system.png',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.ashanetwork.lawyer',
+      demoUrl: '',
+      githubUrl: '',
+    ),
     ProjectData(
       title: 'El Wahda',
       description:
@@ -274,6 +287,8 @@ class PortfolioData {
         'MVVM',
         'Clean Architecture',
         'BLoC / Cubit',
+        'GetX',
+        'riverpod',
         'Stream',
         'Dependency Injection',
         'Caching APIs',

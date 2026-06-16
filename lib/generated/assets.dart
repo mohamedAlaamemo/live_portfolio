@@ -9,7 +9,7 @@ class Assets {
   static const String imagesExcidia = 'assets/images/excidia.png';
   static const String imagesImg = 'assets/images/oops.png';
   static const String imagesMusafir = 'assets/images/musafir.png';
-  static const String imagesMyPhoto = 'assets/images/my_photo.png';
+  static const String imagesMyPhoto = 'assets/images/memo_photo.png';
   static const String imagesOrganization = 'assets/images/organization.png';
   static const String imagesPremuimCourses = 'assets/images/premuim_courses.png';
   static const String imagesSoapBox = 'assets/images/soap_box.png';

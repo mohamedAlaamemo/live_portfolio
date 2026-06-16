@@ -271,8 +271,8 @@ class _HeroVisual extends StatelessWidget {
             ),
             child:  ClipRRect(
               borderRadius: BorderRadius.circular(300),
-              child: Image.network(
-                "https://media.licdn.com/dms/image/v2/D4E03AQGs56SCotfN0g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1692754598457?e=1778716800&v=beta&t=WXnX0p3q8uEF_JmVVofrS5zZ2GeZoJYds7Q15Qi2uCI",
+              child: Image.asset(
+                'assets/images/memo_photo.png',
               ),
             ),
           ),
